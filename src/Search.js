@@ -3,27 +3,28 @@ import request from 'superagent'
 
 import { Link } from 'react-router-dom'
 
-import { Form, Button, Card, Image } from 'semantic-ui-react'
+import { Form, Button, Card, Image, Icon } from 'semantic-ui-react'
+import {Card, CardTitle, CardMedia} from 'material-ui';
 
-const styles = {
-    cardTitle: {
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden'
-    },
-    cardMedia: {
-      maxHeight: 394,
-      overflow: 'hidden'
-    },
-    card: {
-      cursor: 'pointer',
-      height: 400,
-      overflow: 'hidden'
-    },
-    bgImage: {
-      width: '100%'
-    }
-  };
+// const styles = {
+//     cardTitle: {
+//       whiteSpace: 'nowrap',
+//       textOverflow: 'ellipsis',
+//       overflow: 'hidden'
+//     },
+//     cardMedia: {
+//       maxHeight: 394,
+//       overflow: 'hidden'
+//     },
+//     card: {
+//       cursor: 'pointer',
+//       height: 400,
+//       overflow: 'hidden'
+//     },
+//     bgImage: {
+//       width: '100%'
+//     }
+//   };
 
 class Search extends React.Component {
   constructor(props) {
@@ -31,7 +32,26 @@ class Search extends React.Component {
     this.state = {
       searchTerm: '',
       data: [],
-      isMouseOver: false
+      isMouseOver: false,
+      styles: {
+        cardTitle: {
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+          overflow: 'hidden'
+        },
+        cardMedia: {
+          maxHeight: 394,
+          overflow: 'hidden'
+        },
+        card: {
+          cursor: 'pointer',
+          height: 400,
+          overflow: 'hidden'
+        },
+        bgImage: {
+          width: '100%'
+        }
+      }
     }
   }
 
@@ -59,30 +79,30 @@ class Search extends React.Component {
 
     getData = () => {
     // The subtitle won't render if it's null
-    
-
       return this.state.data.map((el, index) => {
         const subtitle = this.state.isMouseOver ? el.overview : null;
-          console.log(el)
+        const { styles } = this.state
+          console.log(el.overview)
         return ( 
             <div>
-                <Card
-                    style={styles.card}
-                    onMouseOver={() => this.setState({isMouseOver: true})}
-                    onMouseLeave={() => this.setState({isMouseOver: false})}
-                >
-                <Link to={`/movie/${el.id}`}>
-                    <Image 
-                    style={styles.bgImage} 
-                    src={`https://image.tmdb.org/t/p/w500${el.poster_path}`} />
-                </Link>
-
-                    <Card.Content>
-                    <Card.Header>{el.title}</Card.Header>
-                        <Card.Description>{subtitle}</Card.Description>
-                    </Card.Content>
-
-                 </Card>
+      <Card
+        style={styles.card}
+        onMouseOver={() => this.setState({isMouseOver: true})}
+        onMouseLeave={() => this.setState({isMouseOver: false})}
+      >
+        {/* <CardTitle title={<div style={styles.cardTitle}>{movie.title}</div>} /> */}
+        <CardMedia
+          style={styles.cardMedia}
+          overlay={
+            <CardTitle
+              title={el.title} 
+              subtitle={subtitle} 
+            />
+          }
+        >
+          <img style={styles.bgImage} src={el.poster_path} />
+        </CardMedia>
+      </Card>
 
              </div>
         )
