@@ -3,16 +3,37 @@ import request from 'superagent'
 
 import { Link } from 'react-router-dom'
 
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button, Card, Image } from 'semantic-ui-react'
+
+const styles = {
+    cardTitle: {
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden'
+    },
+    cardMedia: {
+      maxHeight: 394,
+      overflow: 'hidden'
+    },
+    card: {
+      cursor: 'pointer',
+      height: 400,
+      overflow: 'hidden'
+    },
+    bgImage: {
+      width: '100%'
+    }
+  };
 
 class Search extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       searchTerm: '',
-      data: []
+      data: [],
+      isMouseOver: false
     }
-    }
+  }
 
     handleChange = event => {
       this.setState({
@@ -37,13 +58,34 @@ class Search extends React.Component {
     }
 
     getData = () => {
+    // The subtitle won't render if it's null
+    
+
       return this.state.data.map((el, index) => {
+        const subtitle = this.state.isMouseOver ? el.overview : null;
+          console.log(el)
         return ( 
-        <li key={index}>
-          <Link to={`/movie/${el.id}`}>
-            {el.title}
-          </Link>
-        </li>)
+            <div>
+                <Card
+                    style={styles.card}
+                    onMouseOver={() => this.setState({isMouseOver: true})}
+                    onMouseLeave={() => this.setState({isMouseOver: false})}
+                >
+                <Link to={`/movie/${el.id}`}>
+                    <Image 
+                    style={styles.bgImage} 
+                    src={`https://image.tmdb.org/t/p/w500${el.poster_path}`} />
+                </Link>
+
+                    <Card.Content>
+                    <Card.Header>{el.title}</Card.Header>
+                        <Card.Description>{subtitle}</Card.Description>
+                    </Card.Content>
+
+                 </Card>
+
+             </div>
+        )
          }) 
     }
  
