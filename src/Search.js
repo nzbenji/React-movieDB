@@ -1,7 +1,7 @@
 import React from 'react'
 import request from 'superagent'
 
-import { Link, Route,Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { Form, Button } from 'semantic-ui-react'
 
